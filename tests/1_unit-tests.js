@@ -37,4 +37,14 @@ suite('UnitTests', function() {
         assert.equal(solver.checkRowPlacement(validUnsolved, 0, 1, '1'), false);
         done();
     });
+
+    test('Logic handles a valid column placement', function(done) {
+        assert.equal(solver.checkColPlacement(validUnsolved, 0, 4, '6'), true);
+        done();
+    });
+
+    test('Logic handles an invalid column placement', function(done) {
+        assert.equal(solver.checkColPlacement(validUnsolved, 0, 4, '1'), false);
+        done();
+    });
 });
