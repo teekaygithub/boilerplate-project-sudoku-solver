@@ -3,7 +3,38 @@ const assert = chai.assert;
 
 const Solver = require('../controllers/sudoku-solver.js');
 let solver;
+const validUnsolved = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.';
+const invalidChars = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37Z';
+const invalidLength = validUnsolved + '1';
 
-suite('UnitTests', () => {
+suite('UnitTests', function() {
 
+    before(function() {
+        solver = new Solver();
+    });
+
+    test('Logic handles a valid puzzle string of 81 characters', function(done) {
+        assert.equal(solver.validate(validUnsolved), true);
+        done();
+    });
+
+    test('Logic handles a puzzle string with invalid characters', function(done) {
+        assert.equal(solver.validate(invalidChars), false);
+        done();
+    });
+
+    test('Logic handles a puzzle string that is not 81 characters in length', function(done) {
+        assert.equal(solver.validate(invalidLength), false);
+        done();
+    });
+
+    test('Logic handles a valid row placement', function(done) {
+        assert.equal(solver.checkRowPlacement(validUnsolved, 0, 1, '3'), true);
+        done();
+    });
+
+    test('Logic handles an invalid row placement', function(done) {
+        assert.equal(solver.checkRowPlacement(validUnsolved, 0, 1, '1'), false);
+        done();
+    });
 });
