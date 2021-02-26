@@ -47,4 +47,16 @@ suite('UnitTests', function() {
         assert.equal(solver.checkColPlacement(validUnsolved, 0, 4, '1'), false);
         done();
     });
+
+    test('Logic handles a valid region placement', function(done) {
+        assert.equal(solver.checkRegionPlacement(validUnsolved, 0, 1, '3'), true);
+        assert.equal(solver.checkRegionPlacement(validUnsolved, 4, 3, '4'), true);
+        done();
+    });
+
+    test('Logic handles an invalid region placement', function(done) {
+        assert.equal(solver.checkRegionPlacement(validUnsolved, 0, 1, '6'), false);
+        assert.equal(solver.checkRegionPlacement(validUnsolved, 4, 3, '2'), false);
+        done();
+    });
 });

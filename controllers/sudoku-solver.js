@@ -10,7 +10,7 @@ class SudokuSolver {
     const start = row*9;
     const end = start + 9;
     let sub = puzzleString.substring(start, end);
-    console.log(`Row place: substring ${sub}`); //debug
+    //console.log(`Row place: substring ${sub}`); //debug
     return !sub.includes(value);
   }
 
