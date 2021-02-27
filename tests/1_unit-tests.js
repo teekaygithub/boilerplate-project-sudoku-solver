@@ -3,7 +3,9 @@ const assert = chai.assert;
 
 const Solver = require('../controllers/sudoku-solver.js');
 let solver;
-const validUnsolved = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.';
+const data = require('../controllers/puzzle-strings').puzzlesAndSolutions;
+
+let validUnsolved = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.';
 const invalidChars = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37Z';
 const invalidLength = validUnsolved + '1';
 
@@ -40,6 +42,7 @@ suite('UnitTests', function() {
 
     test('Logic handles a valid column placement', function(done) {
         assert.equal(solver.checkColPlacement(validUnsolved, 0, 4, '6'), true);
+        assert.equal(solver.checkColPlacement(validUnsolved, 4, 8, '5'), true);
         done();
     });
 
@@ -59,4 +62,12 @@ suite('UnitTests', function() {
         assert.equal(solver.checkRegionPlacement(validUnsolved, 4, 3, '2'), false);
         done();
     });
+
+    test('Solver returns the expected solution for an incomplete puzzle', function(done) {
+        for (let i = 0; i < data.length; i++) {
+            console.log(`Unsolved: ${data[i][0]}\nsolved: ${data[i][1]}`);
+            assert.equal(solver.solve(data[i][0]), data[i][1]);
+        }
+        done();
+    })
 });
