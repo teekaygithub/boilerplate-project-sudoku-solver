@@ -8,13 +8,45 @@ chai.use(chaiHttp);
 let validUnsolved = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.';
 const invalidChars = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37Z';
 const invalidLength = validUnsolved + '1';
+let validSolved = '135762984946381257728459613694517832812936745357824196473298561581673429269145378';
 
 suite('Functional Tests', function () {
 
     after(function(done) {
         chai.request.agent(server).close();
         done();
-    })
+    });
+
+    test('/api/solve, solves valid puzzle string', function() {
+        chai.request(server)
+            .post('/api/solve')
+            .type('form')
+            .send({
+                puzzle: validUnsolved
+            })
+            .end(function(err, res) {
+                assert.equal(err, null);
+                assert.equal(res.status, 200);
+                assert.equal(res.body.solution, validSolved);
+            });
+    });
+
+    test('/api/solve, missing puzzle string', function() {
+        chai.request(server)
+            .post('/api/solve')
+            .end(function(err, res) {
+                assert.equal(res.status, 400);
+                assert.isObject(res.body);
+                assert.isTrue(Object.keys(res.body).includes("error"));
+                assert.equal(res.body.error, "Required field missing");
+            });
+    });
+
+    // test('/api/solve, invalid characeters in sudoku board', function() {});
+
+    // test('/api/solve, incorrect length of sudoku board', function() {});
+
+    // test('/api/solve, cannot be solved', function() {});
 
     test('POST to /api/check returns 200', function() {
         chai.request(server)
