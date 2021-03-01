@@ -7,6 +7,9 @@ class SudokuSolver {
     const rowConverter = {'A':0, 'B':1, 'C':2, 'D':3, 'E':4, 'F':5, 'G':6, 'H':7, 'I':8};
     let row = rowConverter[rowString];
     let col = parseInt(colString)-1;
+    if (col < 0 || col > 8 || !Object.keys(rowConverter).includes(rowString)) {
+      return "invalid placement coordinate";
+    }
     return [row, col];
   }
 

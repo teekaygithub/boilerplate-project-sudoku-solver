@@ -91,5 +91,19 @@ suite('Functional Tests', function () {
                 assert.isTrue(res.body.conflict.includes("region"));
             })
     });
+
+    test('POST to /api/check detects missing request fields', function() {
+        chai.request(server)
+            .post('/api/check')
+            .type("form")
+            .send({
+                puzzle: validUnsolved
+            })
+            .end(function(err, res) {
+                assert.equal(res.status, 400);
+                assert.isObject(res.body);
+                assert.equal(res.body.error, "Required field(s) missing");
+            })
+    });
 });
 

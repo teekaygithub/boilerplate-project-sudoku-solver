@@ -17,9 +17,32 @@ module.exports = function (app) {
         });
       }
 
+      // Input value check
+      let valNum = parseInt(value);
+      if (valNum < 1 || valNum > 9) {
+        return res.status(200).json({
+          error: "Invalid value"
+        })
+      }
+
+      // Check coordinate
       let temp = solver.coordinateConverter(coordinate);
+      if (typeof temp === "string") {
+        // invalid coordinate
+        return res.status(200).json({
+          error: "Invalid coordinate"
+        })
+      }
       let row = temp[0];
       let col = temp[1];
+
+      // Sudoku board validity check
+      let valid = solver.validate(puzzle);
+      if (valid[0] === false) {
+        return res.status(200).json({
+          error: valid[1]
+        });
+      }
 
       if (solver.isSafe(puzzle, row, col, value) === true) {
         return res.status(200).json({
