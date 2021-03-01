@@ -103,7 +103,75 @@ suite('Functional Tests', function () {
                 assert.equal(res.status, 400);
                 assert.isObject(res.body);
                 assert.equal(res.body.error, "Required field(s) missing");
+            });
+    });
+
+    test('/api/check, invalid characters in sudoku board', function() {
+        chai.request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: invalidChars,
+                coordinate: 'A1',
+                value: '7'
             })
+            .end(function(err, res) {
+                assert.equal(res.status, 200);
+                assert.isObject(res.body);
+                assert.isTrue(Object.keys(res.body).includes("error"));
+                assert.equal(res.body.error, "Invalid characters in puzzle");
+            });
+    });
+
+    test('/api/check, incorrect length', function() {
+        chai.request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: invalidLength,
+                coordinate: 'A1',
+                value: '7'
+            })
+            .end(function(err, res) {
+                assert.equal(res.status, 200);
+                assert.isObject(res.body);
+                assert.isTrue(Object.keys(res.body).includes("error"));
+                assert.equal(res.body.error, "Expected puzzle to be 81 characters long");
+            });
+    });
+
+    test('/api/check, invalid coordinate', function() {
+        chai.request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: validUnsolved,
+                coordinate: 'J1',
+                value: '1'
+            })
+            .end(function(err, res) {
+                assert.equal(res.status, 200);
+                assert.isObject(res.body);
+                assert.isTrue(Object.keys(res.body).includes("error"));
+                assert.equal(res.body.error, "Invalid coordinate");
+            });
+    });
+
+    test('/api/check, invalid value', function() {
+        chai.request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: validUnsolved,
+                coordinate: 'A1',
+                value: '42'
+            })
+            .end(function(err, res) {
+                assert.equal(res.status, 200);
+                assert.isObject(res.body)
+                assert.isTrue(Object.keys(res.body).includes("error"));
+                assert.equal(res.body.error, "Invalid value");
+            });
     });
 });
 
