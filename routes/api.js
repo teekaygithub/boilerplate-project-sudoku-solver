@@ -19,7 +19,7 @@ module.exports = function (app) {
 
       // Input value check
       let valNum = parseInt(value);
-      if (valNum < 1 || valNum > 9) {
+      if (!Number.isInteger(valNum) || valNum < 1 || valNum > 9) {
         return res.status(200).json({
           error: "Invalid value"
         })
