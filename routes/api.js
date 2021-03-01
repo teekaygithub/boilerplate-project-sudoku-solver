@@ -61,7 +61,9 @@ module.exports = function (app) {
         return res.status(400).json({
           error: "Puzzle cannot be solved"});
       } else {
-        return res.status(200).json({solution: result});
+        return res.status(200).json({
+          solution: result
+        });
       }
     });
 };

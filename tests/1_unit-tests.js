@@ -66,6 +66,26 @@ suite('UnitTests', function() {
         done();
     });
 
+    test('Valid puzzle string pass the solver', function(done) {
+        const ans = solver.solve(validUnsolved);
+        assert.isNotArray(ans);
+        assert.isString(ans);
+        assert.equal(ans.length, 81);
+        done();
+    });
+
+    test('Invalid puzzle string fail the solver', function(done) {
+        const ansChars = solver.solve(invalidChars);
+        const ansLength = solver.solve(invalidLength);
+        assert.isArray(ansChars);
+        assert.equal(ansChars[0], false);
+        assert.equal(ansChars[1], "Invalid characters in puzzle");
+        assert.isArray(ansLength);
+        assert.equal(ansLength[0], false);
+        assert.equal(ansLength[1], "Expected puzzle to be 81 characters long");
+        done();
+    })
+
     test('Solver returns the expected solution for an incomplete puzzle', function(done) {
         for (let i = 0; i < data.length; i++) {
             console.log(`Unsolved: ${data[i][0]}\nsolved: ${data[i][1]}`);
