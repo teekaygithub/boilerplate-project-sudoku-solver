@@ -1,6 +1,14 @@
-const e = require("express");
-
 class SudokuSolver {
+
+  coordinateConverter(coordinateString) {
+    let rowString = coordinateString.charAt(0);
+    let colString = coordinateString.charAt(1);
+    
+    const rowConverter = {'A':0, 'B':1, 'C':2, 'D':3, 'E':4, 'F':5, 'G':6, 'H':7, 'I':8};
+    let row = rowConverter[rowString];
+    let col = parseInt(colString);
+    return [row, col];
+  }
 
   validate(puzzleString) {
     const valreg = /[^0-9|^\.]/
