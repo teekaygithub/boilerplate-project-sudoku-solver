@@ -16,17 +16,20 @@ suite('UnitTests', function() {
     });
 
     test('Logic handles a valid puzzle string of 81 characters', function(done) {
-        assert.equal(solver.validate(validUnsolved), true);
+        const result = solver.validate(validUnsolved);
+        assert.equal(result[0], true);
         done();
     });
 
     test('Logic handles a puzzle string with invalid characters', function(done) {
-        assert.equal(solver.validate(invalidChars), false);
+        const result = solver.validate(invalidChars);
+        assert.equal(result[0], false);
         done();
     });
 
     test('Logic handles a puzzle string that is not 81 characters in length', function(done) {
-        assert.equal(solver.validate(invalidLength), false);
+        const result = solver.validate(invalidLength);
+        assert.equal(result[0], false);
         done();
     });
 

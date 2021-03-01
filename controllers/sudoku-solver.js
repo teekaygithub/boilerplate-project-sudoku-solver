@@ -12,7 +12,12 @@ class SudokuSolver {
 
   validate(puzzleString) {
     const valreg = /[^0-9|^\.]/
-    return ((puzzleString.length === 81) && !valreg.test(puzzleString));
+    if (puzzleString.length !== 81) {
+      return [false, "Expected puzzle to be 81 characters long"];
+    } else if (valreg.test(puzzleString)) {
+      return [false, "Invalid characters in puzzle"];
+    }
+    return [true, ""];
   }
 
   // true = ok to place value, false = not ok
@@ -58,13 +63,15 @@ class SudokuSolver {
 
   // Primary solver
   solve(puzzleString) {
+    const result = this.validate(puzzleString);
+    if (result[0] === false) {
+      return result;
+    }
     return this.helper(puzzleString);
   }
 
   // Recursive function to try all possible combination of value until all table indices can be filled with a number
   helper(puzzleString) {
-
-    if(!this.validate(puzzleString)) {return false;}
 
     var isDone = true;
     var row = -1;

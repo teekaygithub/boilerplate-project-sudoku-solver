@@ -53,8 +53,13 @@ module.exports = function (app) {
       }
 
       let result = solver.solve(puzzle);
-      if (result === false) {
-        return res.status(400).send("Expected puzzle to be 81 characters long");
+      if (Array.isArray(result)) {
+        return res.status(400).json({
+          error: result[1]
+        });
+      } else if (result === false) {
+        return res.status(400).json({
+          error: "Puzzle cannot be solved"});
       } else {
         return res.status(200).json({solution: result});
       }
