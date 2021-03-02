@@ -72,21 +72,20 @@ module.exports = function (app) {
     .post((req, res) => {
       let puzzle = req.body.puzzle;
       if (!puzzle) {
-        return res.status(400).json({error: "Required field missing"});
+        return res.status(200).json({error: "Required field missing"});
       }
 
       let result = solver.solve(puzzle);
       if (Array.isArray(result)) {
-        return res.status(400).json({
+        return res.status(200).json({
           error: result[1]
         });
       } else if (result === false) {
-        return res.status(400).json({
-          error: "Puzzle cannot be solved"});
-      } else {
         return res.status(200).json({
-          solution: result
-        });
+          error: "Puzzle cannot be solved"});
       }
+      return res.status(200).json({
+        solution: result
+      });
     });
 };

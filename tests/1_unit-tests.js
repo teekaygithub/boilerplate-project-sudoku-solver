@@ -11,7 +11,7 @@ const invalidLength = validUnsolved + '1';
 
 suite('UnitTests', function() {
 
-    before(function() {
+    suiteSetup(function() {
         solver = new Solver();
     });
 

@@ -14,7 +14,7 @@ class SudokuSolver {
   }
 
   validate(puzzleString) {
-    const valreg = /[^0-9|^\.]/
+    const valreg = /[^0-9|^\.]/;
     if (puzzleString.length !== 81) {
       return [false, "Expected puzzle to be 81 characters long"];
     } else if (valreg.test(puzzleString)) {

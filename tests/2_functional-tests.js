@@ -9,10 +9,11 @@ let validUnsolved = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...
 const invalidChars = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37Z';
 const invalidLength = validUnsolved + '1';
 let validSolved = '135762984946381257728459613694517832812936745357824196473298561581673429269145378';
+const unsolveable = '13576298494638125772845961369451783281293674535782419647329856958167342.269145379';
 
 suite('Functional Tests', function () {
 
-    after(function(done) {
+    suiteTeardown(function(done) {
         chai.request.agent(server).close();
         done();
     });
@@ -35,18 +36,54 @@ suite('Functional Tests', function () {
         chai.request(server)
             .post('/api/solve')
             .end(function(err, res) {
-                assert.equal(res.status, 400);
+                assert.equal(res.status, 200);
                 assert.isObject(res.body);
                 assert.isTrue(Object.keys(res.body).includes("error"));
                 assert.equal(res.body.error, "Required field missing");
             });
     });
 
-    // test('/api/solve, invalid characeters in sudoku board', function() {});
+    test('/api/solve, invalid characters in sudoku board', function() {
+        chai.request(server)
+            .post('/api/solve')
+            .type('form')
+            .send({
+                puzzle: invalidChars
+            })
+            .end(function(err, res) {
+                assert.equal(res.status, 200);
+                assert.isObject(res.body);
+                assert.isTrue(Object.keys(res.body).includes("error"));
+                assert.equal(res.body.error, "Invalid characters in puzzle");
+            });
+    });
 
-    // test('/api/solve, incorrect length of sudoku board', function() {});
+    test('/api/solve, incorrect length of sudoku board', function() {
+        chai.request(server)
+            .post('/api/solve')
+            .type('form')
+            .send({
+                puzzle: invalidLength
+            })
+            .end(function(err, res) {
+                assert.equal(res.status, 200);
+                assert.isObject(res.body);
+                assert.isTrue(Object.keys(res.body).includes("error"));
+                assert.equal(res.body.error, "Expected puzzle to be 81 characters long");
+            });
+    });
 
-    // test('/api/solve, cannot be solved', function() {});
+    test('/api/solve, cannot be solved', function() {
+        chai.request(server)
+            .post('/api/solve')
+            .type('form')
+            .send({
+                puzzle: unsolveable
+            })
+            .end(function(err, res) {
+                assert.equal(res.status, 200);
+            });
+    });
 
     test('POST to /api/check returns 200', function() {
         chai.request(server)
